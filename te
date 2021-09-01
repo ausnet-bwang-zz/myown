@@ -4,3 +4,15 @@ POINT(1025745941 900809185)
 SELECT ST_AsText(ST_Transform(ST_GeomFromText('POINT(1025745941 900809185)',900915),4326)) As wgs_geom;
 
 POINT(145.29271210433 -37.8934663278796)
+
+ WITH data AS (
+   SELECT
+     ST_GeomFromText('POLYGON((170 50,170 72,-130 72,-130 50,170 50))', 4326) AS p1,
+     ST_GeomFromText('POLYGON((-170 68,-170 90,-141 90,-141 68,-170 68))', 4326) AS p2,
+     '+proj=gnom +ellps=WGS84 +lat_0=70 +lon_0=-160 +no_defs'::text AS gnom
+ )
+ SELECT ST_AsText(
+   ST_Transform(
+     ST_Intersection(ST_Transform(p1, gnom), ST_Transform(p2, gnom)),
+   gnom, 4326))
+ FROM data;
