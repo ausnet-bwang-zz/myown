@@ -17,6 +17,11 @@ PROJCS["SP Ausnet NMA Database Coordinate System",GEOGCS["Geocentric_Datum_of_Au
 +proj=lcc +lat_0=-37 +lon_0=145 +lat_1=-36 +lat_2=-38 +x_0=1000000 +y_0=1000000 +ellps=GRS80 +units=mm +no_defs
 
 
-# testing polygon
+# testing linestring
 EO_REGULATING_EQPT_INST
 LSAT_FUNCTIONAL_LOCATION_SDME_EO_REGULATING_EQPT_INST_GEOM
+
+LINESTRING (4959 8694, 4959 8669)
+postgis:
+LINESTRING (132.33548806222882 -45.374963390300785, 132.33548802035733 -45.37496361082724)
+
