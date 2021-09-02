@@ -18,4 +18,5 @@ PROJCS["SP Ausnet NMA Database Coordinate System",GEOGCS["Geocentric_Datum_of_Au
 
 
 # testing polygon
+EO_REGULATING_EQPT_INST
 LSAT_FUNCTIONAL_LOCATION_SDME_EO_REGULATING_EQPT_INST_GEOM
