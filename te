@@ -1,4 +1,38 @@
-lnk.HUB_MATERIAL_HSH_KEY,lnk.HUB_EQUIPMENT_HSH_KEY, hubdev.DEVICE_ID, hubequi.EQUIPMENT_ID
+with uniq_ws as (
+  select distinct twcid, weather_station_id, weather_station_longitude, weather_station_latitude
+  from armbw_weather_station 
+)
+,ws as (
+  -- weather station lat long should be exchanged - informed Shahban
+  select twcid, weather_station_id, ST_Point(cast(weather_station_latitude as decimal(24,20)), cast(weather_station_longitude as decimal(24,20))) as ws_geom 
+  from uniq_ws
+)
+,eq_all_ws as (
+  select
+  cast(eq.equipment_id as varchar(36)) as equipment_id, ST_Point(cast(eq.derived_longitude as decimal(24,20)), cast(eq.derived_latitude as decimal(24,20))) as eq_geom
+  ,ws.twcid, ws.weather_station_id, ws_geom
+  from armbw_equipment eq, ws
+  -- TODO if null default to some weather station
+  where derived_longitude != 'null' and derived_latitude != 'null'
+)
+,eq_all_ws_dist as (
+  select
+  equipment_id, twcid, weather_station_id, eq_geom, ws_geom, ST_Distance(eq_geom, ws_geom) as dist
+  from eq_all_ws
+)
+,eq_nearest_ws as (
+  select equipment_id, twcid, weather_station_id, eq_geom, ws_geom, dist from (
+    select
+    equipment_id, twcid, weather_station_id, eq_geom, ws_geom, dist
+    ,row_number() over (partition by equipment_id order by dist) as rownum
+    from eq_all_ws_dist
+  )
+  where rownum = 1
+)
+--select count(*) from eq_all_ws_dist
+select equipment_id, twcid, weather_station_id from eq_nearest_ws
+;
+
 
 POINT(1025745941 900809185)
 
