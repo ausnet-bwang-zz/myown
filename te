@@ -1,4 +1,4 @@
-scripts/sql/outbound/outbound_job_service_order_status.sql
+lnk.HUB_MATERIAL_HSH_KEY,lnk.HUB_EQUIPMENT_HSH_KEY, hubdev.DEVICE_ID, hubequi.EQUIPMENT_ID
 
 POINT(1025745941 900809185)
 
